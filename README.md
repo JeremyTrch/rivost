@@ -47,14 +47,19 @@ Le free plan API Cinéma limite à **250 requêtes / semaine**. RiVOST :
 
 Les visiteurs lisent le cache : le quota reste largement sous la limite pour un usage personnel / public léger.
 
+## Repo
+
+- GitHub : [JeremyTrch/rivost](https://github.com/JeremyTrch/rivost)
+
 ## Déploiement Vercel
 
-1. Pousse le repo sur GitHub.
-2. Importe le projet sur Vercel.
-3. Ajoute `API_CINEMA_KEY` et `CRON_SECRET` (Production + Preview).
-4. Deploy — le cron est défini dans [`vercel.json`](./vercel.json).
+1. Sur [vercel.com/new](https://vercel.com/new), importe **JeremyTrch/rivost** (compte Gmail / celui où tu as déjà tes projets).
+2. Avant le premier deploy, ajoute les env vars (Production + Preview) :
+   - `API_CINEMA_KEY` — clé `ac_live_…` (API Cinéma)
+   - `CRON_SECRET` — chaîne aléatoire longue (ex. `openssl rand -hex 24`)
+3. Deploy — le cron (`0 */6 * * *` → `/api/revalidate`) est dans [`vercel.json`](./vercel.json).
 
-Sur Hobby, Vercel définit `CRON_SECRET` automatiquement pour les appels cron si tu l’as configuré ; sinon utilise la même valeur que dans le dashboard.
+Vercel envoie `Authorization: Bearer <CRON_SECRET>` aux crons Hobby quand `CRON_SECRET` est défini dans le projet.
 
 ## Disclaimer
 
