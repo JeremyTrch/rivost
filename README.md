@@ -53,13 +53,17 @@ Les visiteurs lisent le cache : le quota reste largement sous la limite pour un 
 
 ## Déploiement Vercel
 
-1. Sur [vercel.com/new](https://vercel.com/new), importe **JeremyTrch/rivost** (compte Gmail / celui où tu as déjà tes projets).
-2. Avant le premier deploy, ajoute les env vars (Production + Preview) :
-   - `API_CINEMA_KEY` — clé `ac_live_…` (API Cinéma)
-   - `CRON_SECRET` — chaîne aléatoire longue (ex. `openssl rand -hex 24`)
-3. Deploy — le cron (`0 */6 * * *` → `/api/revalidate`) est dans [`vercel.json`](./vercel.json).
+Compte cible : équipe **JustMe** (`just-me-1ed5`) — pas le compte Gmail.
 
-Vercel envoie `Authorization: Bearer <CRON_SECRET>` aux crons Hobby quand `CRON_SECRET` est défini dans le projet.
+Le projet Vercel `rivost` existe déjà avec `API_CINEMA_KEY` et `CRON_SECRET`.
+
+Pour brancher GitHub (déploys auto à chaque push) :
+
+1. Connecte GitHub sur ce compte : [vercel.com/account](https://vercel.com/account) → **Login Connections** / Git
+2. Puis dans le projet `rivost` → Settings → Git → connecte `JeremyTrch/rivost`
+
+Le cron quotidien (`0 6 * * *` UTC → `/api/revalidate`) est dans [`vercel.json`](./vercel.json)
+(Hobby : 1 cron/jour max). Le cache Next se rafraîchit aussi via `cacheLife` (~6 h).
 
 ## Disclaimer
 
