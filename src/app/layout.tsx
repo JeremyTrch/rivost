@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
-import { Fraunces, Source_Sans_3 } from "next/font/google";
+import { Fraunces, Manrope } from "next/font/google";
 import "./globals.css";
 
 const display = Fraunces({
   variable: "--font-display",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
-const body = Source_Sans_3({
+const body = Manrope({
   variable: "--font-body",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -24,7 +26,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="fr"
       className={`${display.variable} ${body.variable} h-full antialiased`}
     >
-      <body className="rivost-bg min-h-full flex flex-col">
+      <body className="rivost-bg relative min-h-full flex flex-col">
         <div className="rivost-grain" aria-hidden />
         {children}
       </body>

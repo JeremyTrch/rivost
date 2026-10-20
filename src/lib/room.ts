@@ -1,28 +1,43 @@
 import type { ShowFormat } from "@/types/showtimes";
 
+const PREMIUM_ROOM =
+  /lounge|lodge|cosy|imax|atmos|premium|vip|laser|ice|screen\s*x|dolby|aurore/i;
+
+function cleanRoomName(room: string): string {
+  return room
+    .trim()
+    .replace(/^salle\s+/i, "")
+    .replace(/\s+/g, " ");
+}
+
 /**
  * Human label for the screening experience.
- * Prefer premium formats; otherwise use room name hints (Lounge, etc.).
+ * Prefer premium formats; otherwise use distinctive room names.
  */
 export function roomLabel(format: ShowFormat, room: string | null): string {
   if (format === "IMAX") return "IMAX";
   if (format === "4DX") return "4DX";
-  if (format === "DOLBY") return "Dolby";
+  if (format === "DOLBY") {
+    if (room && /screen\s*x|lodge|cosy/i.test(room)) {
+      return cleanRoomName(room);
+    }
+    return "Dolby";
+  }
   if (format === "3D") {
-    if (room && /lounge|atmos|premium|vip/i.test(room)) {
-      return `${room} · 3D`;
+    if (room && PREMIUM_ROOM.test(room)) {
+      return `${cleanRoomName(room)} · 3D`;
     }
     return "3D";
   }
 
   if (room) {
-    const trimmed = room.trim();
-    if (/lounge|imax|atmos|premium|vip|laser|ice/i.test(trimmed)) {
-      return trimmed;
+    const cleaned = cleanRoomName(room);
+    if (PREMIUM_ROOM.test(cleaned) || PREMIUM_ROOM.test(room)) {
+      return cleaned;
     }
-    // Generic "Salle 3" → Standard, but keep distinctive names
-    if (!/^salle\s*\d+$/i.test(trimmed)) {
-      return trimmed;
+    // Generic "3" / "Salle 3" → Standard
+    if (!/^\d+$/i.test(cleaned)) {
+      return cleaned;
     }
   }
 
