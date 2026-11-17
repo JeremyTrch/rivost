@@ -1,0 +1,4 @@
+// Shared build settings for the RiVOST target.
+// The API Cinéma key lives in Secrets.xcconfig (git-ignored). Copy Secrets.example.xcconfig to create it.
+API_CINEMA_KEY =
+#include? "Secrets.xcconfig"

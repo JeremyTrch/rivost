@@ -4,6 +4,7 @@ import {
   fetchAllCinemaShowtimes,
 } from "@/lib/api-cinema/client";
 import { RIVOST_CINEMAS } from "@/lib/cinemas";
+import { resolvePosters } from "@/lib/posters";
 import { roomLabel } from "@/lib/room";
 import type { Movie, Showtime, ShowtimesSnapshot } from "@/types/showtimes";
 
@@ -88,6 +89,7 @@ async function fetchFreshSnapshot(): Promise<ShowtimesSnapshot> {
   }
 
   showtimes.sort((a, b) => a.startsAt.localeCompare(b.startsAt));
+  await resolvePosters(showtimes);
 
   return {
     fetchedAt: new Date().toISOString(),
